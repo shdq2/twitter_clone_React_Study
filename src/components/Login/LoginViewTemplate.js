@@ -23,7 +23,8 @@ class LoginViewTemplate extends React.Component{
       postLogin = async (id,pw)=>{
         
       }
-      Login = () => {
+      Login = (e) => {
+        e.preventDefault();
         const {userList,userConfig} = this.state;
         const {id,pw} = userConfig;
         const item = userList.find(item=>item.id == id);
@@ -33,7 +34,8 @@ class LoginViewTemplate extends React.Component{
               return;
             }
             if(res.data.result.length > 0){
-              localStorage.setItem('id',id);
+              sessionStorage.setItem('id',id);
+              //localStorage.setItem('id',id);
               this.setState({
                 userConfig:{
                   id:'',
@@ -43,12 +45,15 @@ class LoginViewTemplate extends React.Component{
               this.props.toggleSwitch(true);
               console.log("success login")
             }  else{
+              console.log(res.data);
               console.log("failed login")
             }
         });
       }
     
-      updateUser = ()=>{
+      updateUser = (e)=>{
+        e.preventDefault();
+        
         const {userList,userConfig} = this.state;
         const {id,pw} = userConfig;
         if(id == '' || pw == '')

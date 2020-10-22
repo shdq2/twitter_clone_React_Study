@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import defaultImg from './../../img/default.jpg'
-import windowResize from './../../hooks/useWindowResize'
+import axios from 'axios';
 class CardTemplate extends React.Component{
 // Hook
     
@@ -64,20 +63,28 @@ class CardTemplate extends React.Component{
             display:${props=>props.src == '' ? 'none':'block'};
             max-width:100%;
         `
+            
         const Card = ({item})=>{
             try {
-                var url = "";
-                for(var i = 0 ; i < item.card_img.data.length;i++){
-                    url+= String.fromCharCode(item.card_img.data[i]) ;
-                }
-                item.card_img = url;
+                item.card_img = new Buffer(item.card_img.data,'binary').toString('utf-8')
             } catch (error) {
                 console.log(error);
             }
             return (
                 <CardItem>
                     <div className="ItemHeader">
-                        {item.user_id}
+                        
+                        <div style={{width:'100%',position:'relative'}}>
+                            {item.user_id}
+                            {
+                                item.user_id === sessionStorage.getItem('id')
+                                ?
+                                    <img style={{position:'absolute',right:0,paddingRight:'10px',cursor:'pointer'}} onClick={()=>this.props.removeCard(item.card_id)} src="https://img.icons8.com/small/16/000000/trash--v1.png"/>
+                                :
+                                    ''
+                            }
+                        
+                        </div>                    
                     </div>
                     <div className="ItemBody">
                         {item.card_msg}
@@ -86,7 +93,6 @@ class CardTemplate extends React.Component{
                 </CardItem>
             )
         }
-
 
         const CardList = ()=> this.props.cardList.map((item,index) =>{
             return <Card item={item} key={index} />

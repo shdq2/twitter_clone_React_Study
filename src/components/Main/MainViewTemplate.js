@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import MainView from './MainView'
 import axios from 'axios';
-
+import {getCardList,insertCardList,removeCard} from './Controller';
 class MainViewTemplate extends React.Component{
     state={
         typingText:'',
@@ -12,49 +12,34 @@ class MainViewTemplate extends React.Component{
 
     constructor(props){
         super(props);
-       
     }
 
     componentDidMount(){
-        this.getCardList();
-    }
-    getCardList = ()=>{
-        axios.get('http://localhost:4000/card/cardList').then(res=>{
-            const data = res.data;
-            if(data.err){
-                console.log(data.err);
-                return;
-            }
-            
-            this.setState({
-                textList:data.result
-            })
+        this.LoadCardList();
+    } 
+
+    LoadCardList = async () => {
+        const result = await getCardList();
+        this.setState({
+            textList:result
         })
     }
 
-    insertCardList = (img,msg,user_id)=>{
-        axios.post('http://localhost:4000/card/cardInsert',{img:img,msg:msg,user_id:user_id}).then(res=>{
-            const data = res.data;
-            if(data.err){
-                console.log(data.err);
-                return;
-            }
-            
+    uploadText = async () =>{
+        const {typingText,textList} = this.state;
+        if(typingText == "" || typingText == undefined ||typingText == null){
+            return;
+        }
+        var result = await insertCardList(this.state.img,this.state.typingText,sessionStorage.getItem('id'));
+
+        if(result["success"]){
+            this.LoadCardList();
             this.setState({
                 ...this.state,
                 typingText:'',
                 img:''
             });
-
-            this.getCardList();
-        })
-    }
-    uploadText = () =>{
-        const {typingText,textList} = this.state;
-        if(typingText == "" || typingText == undefined ||typingText == null){
-            return;
         }
-        this.insertCardList(this.state.img,this.state.typingText,localStorage.getItem('id'));
     }
 
     uploadImg = (e) => {
@@ -68,6 +53,13 @@ class MainViewTemplate extends React.Component{
         }
         
     }
+    handleRemoveCard = async (id) =>{
+        var result = await removeCard(id);
+
+        if(result["success"]){
+            this.LoadCardList();
+        }
+    }
     handleChangeText = (e)=>{
         this.setState({
             typingText:e.target.value
@@ -75,7 +67,7 @@ class MainViewTemplate extends React.Component{
     }
     render(){
         const {typingText,textList,img} = this.state;
-        const {uploadText,handleChangeText,uploadImg} = this;
+        const {uploadText,handleChangeText,uploadImg,handleRemoveCard} = this;
         const {toggleSwitch} = this.props;
         return (
             <div>
@@ -86,6 +78,7 @@ class MainViewTemplate extends React.Component{
                     typingText = {typingText}
                     cardList = {textList}
                     uploadImg = {uploadImg}
+                    removeCard = {handleRemoveCard}
                     img ={img}/>
             </div>
             

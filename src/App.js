@@ -14,7 +14,7 @@ class App extends React.Component {
     
   }
   componentDidMount(){
-    if(localStorage.getItem('id') != null){
+    if(sessionStorage.getItem('id') != null){
       this.switchLogin(true);
     }
   }
@@ -24,7 +24,7 @@ class App extends React.Component {
       isLogin :value
     })
     if(!value){
-      localStorage.removeItem('id');
+      sessionStorage.removeItem('id');
     }
   }
 

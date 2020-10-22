@@ -11,7 +11,7 @@ router.get('/cardList',function(req,res){
     var data = req.body;    
     var resultJson = {};    
     
-    var stmt = 'select * from card';
+    var stmt = 'select * from card order by card_date desc';
     connection.query(stmt, function (err, result) {
         resultJson.id = data.id;       
         resultJson.result = result; 
@@ -29,7 +29,25 @@ router.post('/cardInsert',function(req,res){
     var data = req.body;    
     var resultJson = {};    
     
-    var stmt = 'insert into card(card_msg,card_img,user_id) values(\''+data.msg+'\',\''+data.img+'\',\''+data.user_id+'\')';
+    var stmt = 'insert into card(card_msg,card_img,user_id,card_date) values(\''+data.msg+'\',\''+data.img+'\',\''+data.user_id+'\',now())';
+    connection.query(stmt, function (err, result) {
+
+        resultJson.id = data.id;       
+        resultJson.result = result; 
+        resultJson.err = err;      
+        
+        res.json(resultJson);
+    })
+})
+
+router.post('/cardDelete',function(req,res){
+    if(connection == null){
+        connection = mysql_dbc.get();
+    }    
+
+    var data = req.body;    
+    var resultJson = {};    
+    var stmt = 'delete from card where card_id = \''+data.id+'\'';
     connection.query(stmt, function (err, result) {
 
         resultJson.id = data.id;       

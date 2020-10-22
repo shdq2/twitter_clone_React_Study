@@ -47,7 +47,8 @@ const Preview = styled.img`
     display:${props=>props.src == '' ? 'none' : 'block'}
 `;
 
-const MainView = ({onChange,uploadText,typingText,cardList,uploadImg,img}) =>{
+const MainView = ({onChange,uploadText,typingText,cardList,uploadImg,img,removeCard}) =>{
+    
     return (
         <div>
             <TextDiv>            
@@ -56,13 +57,13 @@ const MainView = ({onChange,uploadText,typingText,cardList,uploadImg,img}) =>{
                     <UploadBtn type="button" onClick={uploadText} value="->"/>
                 </div>
                 
-                <label style={{cursor:"pointer"}} for="file" >+ Add Image</label>
+                <label style={{cursor:"pointer"}} htmlFor="file" >+ Add Image</label>
                 <input type="file" id="file" style={{display:'none'}} onChange={uploadImg} accept="image/*"/>
                 <br />
                 <Preview src={img} />            
             </TextDiv>
                 <hr />
-            <CardTemplate cardList={cardList} />
+            <CardTemplate cardList={cardList} removeCard={removeCard} />
         </div>
         
     )
