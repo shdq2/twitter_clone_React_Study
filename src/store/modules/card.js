@@ -28,16 +28,17 @@ export default handleActions({
         return state.set('img',url);
     },
     [INSERTCARD]:(state,payload)=>{
-        let item = {
+        let item = Map({
             card_id:state.get('cardList').get(0).get('card_id')+1,
             card_msg:state.get('typingText'),
             card_img:state.get('img'),
             user_id:sessionStorage.getItem('id'),
             card_date:new Date()
-        }
-        let list = state.get('cardList');
-        list.unshift(item);
-        return state.set('img','').set('typingText','').set('cardList',list);
+        });
+        let list = new List(state.get('cardList'));
+        list = list.unshift(item);
+
+        return state.set('img','').set('typingText','').set('cardList',fromJS(list));
     },
     [CARDLIST]:(state,{payload:list})=>{
         return state.set('cardList',fromJS(list));

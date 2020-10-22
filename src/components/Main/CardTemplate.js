@@ -66,12 +66,7 @@ class CardTemplate extends React.Component{
         `
             
         const Card = ({item,idx})=>{
-            let url=''
-            try {
-                url = new Buffer(item.get('card_img').get('data').toArray(),'binary').toString('utf-8')
-            } catch (error) {
-                console.log(error);
-            }
+            let url=item.get('card_img');
             return (
                 <CardItem>
                     <div className="ItemHeader">

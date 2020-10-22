@@ -14,8 +14,12 @@ router.get('/cardList',function(req,res){
     var stmt = 'select * from card order by card_date desc';
     connection.query(stmt, function (err, result) {
         resultJson.id = data.id;       
-        resultJson.result = result; 
-        resultJson.err = err;      
+         
+        resultJson.err = err;
+        for(var i = 0 ; i < result.length;i++){
+            result[i].card_img = Buffer.alloc(result[i].card_img.length,result[i].card_img,'base64').toString('utf-8');
+        };
+        resultJson.result = result;
         
         res.json(resultJson);
     })

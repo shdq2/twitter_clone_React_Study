@@ -37,7 +37,6 @@ class MainViewTemplate extends React.Component{
     } 
 
     LoadCardList = async () => {
-        console.log("etste'");
         const result = await getCardList();
         const {cardAction} = this.props;
         cardAction.CardList(result);
