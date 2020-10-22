@@ -53,7 +53,7 @@ const MainView = ({onChange,uploadText,typingText,cardList,uploadImg,img,removeC
         <div>
             <TextDiv>            
                 <div style={{position:'relative'}}>
-                    <TextFiled type="text" value={typingText} onChange={onChange} /> 
+                    <TextFiled type="text" onChange={onChange} value={typingText} /> 
                     <UploadBtn type="button" onClick={uploadText} value="->"/>
                 </div>
                 

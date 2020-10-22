@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import {Map} from 'immutable';
 class CardTemplate extends React.Component{
 // Hook
     
@@ -64,9 +65,10 @@ class CardTemplate extends React.Component{
             max-width:100%;
         `
             
-        const Card = ({item})=>{
+        const Card = ({item,idx})=>{
+            let url=''
             try {
-                item.card_img = new Buffer(item.card_img.data,'binary').toString('utf-8')
+                url = new Buffer(item.get('card_img').get('data').toArray(),'binary').toString('utf-8')
             } catch (error) {
                 console.log(error);
             }
@@ -75,11 +77,11 @@ class CardTemplate extends React.Component{
                     <div className="ItemHeader">
                         
                         <div style={{width:'100%',position:'relative'}}>
-                            {item.user_id}
+                            {item.get('user_id')}
                             {
-                                item.user_id === sessionStorage.getItem('id')
+                                item.get('user_id') === sessionStorage.getItem('id')
                                 ?
-                                    <img style={{position:'absolute',right:0,paddingRight:'10px',cursor:'pointer'}} onClick={()=>this.props.removeCard(item.card_id)} src="https://img.icons8.com/small/16/000000/trash--v1.png"/>
+                                    <img style={{position:'absolute',right:0,paddingRight:'10px',cursor:'pointer'}} onClick={()=>this.props.removeCard(item.get('card_id'),idx)} src="https://img.icons8.com/small/16/000000/trash--v1.png"/>
                                 :
                                     ''
                             }
@@ -87,21 +89,34 @@ class CardTemplate extends React.Component{
                         </div>                    
                     </div>
                     <div className="ItemBody">
-                        {item.card_msg}
-                        <ItemImg src={item.card_img} />
+                        {item.get('card_msg')}
+                        <ItemImg src={url} />
                     </div>
                 </CardItem>
             )
         }
 
-        const CardList = ()=> this.props.cardList.map((item,index) =>{
-            return <Card item={item} key={index} />
-        })
-        return (
-            <Template >
-                <CardList />
-            </Template>
-        )
+        const CardList = data=> {
+            return data.map((item,index) =>{
+                return <Card item={item} idx={index} key={index} />
+            })
+        }
+        
+        if(this.props.cardList !== undefined &&this.props.cardList !== null ){
+            return (
+                <Template >
+                    {CardList(this.props.cardList)}
+                </Template>
+            )
+        }else{
+            return(
+                <div>
+                    no have Item
+                </div>
+        
+            )
+        }
+        
     }
     
 }

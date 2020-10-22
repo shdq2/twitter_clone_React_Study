@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const getCardList = async ()=>{
     let list = [];
-    await axios.get(window.location.href+'card/cardList').then(res=>{
+    await axios.get('http://localhost:4000/card/cardList').then(res=>{
         const data = res.data;
         if(data.err){
             console.log(data.err);
@@ -14,7 +14,7 @@ const getCardList = async ()=>{
 }
 const insertCardList = async (img,msg,user_id)=>{
     var result = {};
-    await axios.post(window.location.href+'card/cardInsert',{img:img,msg:msg,user_id:user_id}).then(res=>{
+    await axios.post('http://localhost:4000/card/cardInsert',{img:img,msg:msg,user_id:user_id}).then(res=>{
         const data = res.data;
         if(data.err){
             console.log(data.err);
@@ -30,7 +30,7 @@ const insertCardList = async (img,msg,user_id)=>{
 
 const removeCard = async (id)=> {
     var result = {};
-    await axios.post(window.location.href+'card/cardDelete',{id:id}).then(res=>{
+    await axios.post('http://localhost:4000/card/cardDelete',{id:id}).then(res=>{
         if(res.data.err){
             console.log(res.data.err);
             return;

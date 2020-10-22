@@ -22,4 +22,17 @@ mysql.test_open(connection);
 const port = process.env.PORT || 4000;
 app.set('port' , port );
  const server = http.createServer(app);
- server.listen(port, () => console.log(`Running on localhost:${port}`));
+ server.listen(port, () =>{
+      console.log(`Running on localhost:${port}`)
+
+});
+
+const socket = require('socket.io');
+const io = socket.listen(server);
+
+io.on('connection',(sock)=>{
+    console.log("Login User" + sock.client.id);
+    sock.on('cardUpdate', (id)=>{
+        io.emit('cardUpdate',id);
+    })
+})
