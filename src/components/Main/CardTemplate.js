@@ -49,7 +49,7 @@ class CardTemplate extends React.Component{
         const Template = styled.div`
             max-width:1000px;
             @media (max-width:600px){
-                width:${props=>props.width}px;
+                width:100%;
             }
 
             @media (min-width: 601px){
@@ -61,7 +61,7 @@ class CardTemplate extends React.Component{
         `
 
         const ItemImg = styled.img`
-            display:${props=>props.src == '' ? 'none':'block'};
+            display:${props=>props.src === '' ? 'none':'block'};
             max-width:100%;
         `
             

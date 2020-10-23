@@ -31,7 +31,7 @@ class MainViewTemplate extends React.Component{
                 
             })
         }else{
-            console.log("tseset")
+            
             
         }
     } 
@@ -49,7 +49,7 @@ class MainViewTemplate extends React.Component{
         }
         var result = await insertCardList(this.props.img,this.props.typingText,sessionStorage.getItem('id'));
 
-        if(result["success"]){
+        if(result["code"]){
 
             //this.LoadCardList();
             this.props.cardAction.InsertCard();
@@ -68,7 +68,7 @@ class MainViewTemplate extends React.Component{
     handleRemoveCard = async (id,idx) =>{
         var result = await removeCard(id);
 
-        if(result["success"]){
+        if(result["code"]){
             this.props.cardAction.RemoveCard(id);
             //this.LoadCardList();
         }

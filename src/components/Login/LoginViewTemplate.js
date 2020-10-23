@@ -6,6 +6,7 @@ import socketIO from 'socket.io-client';
 import * as userActions from './../../store/modules/users'; 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import * as controller from './Controller';
 class LoginViewTemplate extends React.Component{
     constructor(props){
         super(props);
@@ -23,47 +24,34 @@ class LoginViewTemplate extends React.Component{
         // })
       }
 
-      Login = (e) => {
+      Login = async (e) => {
         e.preventDefault();
         const {userActions,userConfig} = this.props;
-         const {id,pw} = userConfig;
-        axios.post('http://localhost:4000/user/login',{id:id,pw:pw}).then(res=>{
-            if(res.data.err) {
-              console.log(res.data.err);
-              return;
-            }
-            if(res.data.result.length > 0){
-              sessionStorage.setItem('id',id);
-              localStorage.setItem('socket',socketIO.connect('http://localhost:4000'));
-              userActions.LoginUser();
-              console.log("success login")
-            }  else{
-              console.log(res.data);
-              console.log("failed login")
-            }
-        });
+        const {id,pw} = userConfig;
+        var result = await controller.Login(id,pw);
+        if(result.result.length > 0){
+          sessionStorage.setItem('id',id);
+          userActions.LoginUser();
+          console.log("success login")
+        }else{
+          console.log(result.data);
+          console.log("failed login")
+        }
       }
     
-      updateUser = (e)=>{
+      updateUser = async (e)=>{
         e.preventDefault();
         
         const {userConfig,userActions} = this.props;
         const {id,pw} = userConfig;
         if(id == '' || pw == '')
           return;
-          
-          axios.post('http://localhost:4000/user/createAccount',{id:id,pw:pw})
-          .then(res=>{
-            if(res.data.err){
-              console.log(res.data.err);
-              return;
-            }
-            userActions.CreateUser();
-            console.log("success Sign in");
-          }).catch(err=>{
-            console.log(err);
-          })
         
+        var result = await controller.CreateAccount(id,pw);
+          
+        if(result["code"]){
+          userActions.CreateUser();
+        }
       }
       handleChange = (event)=>{
         const {userActions} = this.props;
