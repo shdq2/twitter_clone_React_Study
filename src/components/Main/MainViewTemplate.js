@@ -42,13 +42,13 @@ class MainViewTemplate extends React.Component{
         cardAction.CardList(result);
     }
 
-    uploadText = async () =>{
+    uploadText = async (e) =>{
+        e.preventDefault();
         const {typingText} = this.props;
         if(typingText == "" || typingText == undefined ||typingText == null){
             return;
         }
         var result = await insertCardList(this.props.img,this.props.typingText,sessionStorage.getItem('id'));
-
         if(result["code"]){
 
             //this.LoadCardList();
@@ -65,7 +65,7 @@ class MainViewTemplate extends React.Component{
         }
         
     }
-    handleRemoveCard = async (id,idx) =>{
+    handleRemoveCard = async (id) =>{
         var result = await removeCard(id);
 
         if(result["code"]){

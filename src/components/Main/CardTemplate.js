@@ -65,7 +65,7 @@ class CardTemplate extends React.Component{
             max-width:100%;
         `
             
-        const Card = ({item,idx})=>{
+        const Card = ({item})=>{
             let url=item.get('card_img');
             return (
                 <CardItem>
@@ -76,11 +76,10 @@ class CardTemplate extends React.Component{
                             {
                                 item.get('user_id') === sessionStorage.getItem('id')
                                 ?
-                                    <img style={{position:'absolute',right:0,paddingRight:'10px',cursor:'pointer'}} onClick={()=>this.props.removeCard(item.get('card_id'),idx)} src="https://img.icons8.com/small/16/000000/trash--v1.png"/>
+                                    <img style={{position:'absolute',right:0,paddingRight:'10px',cursor:'pointer'}} onClick={()=>this.props.removeCard(item.get('card_id'))} src="https://img.icons8.com/small/16/000000/trash--v1.png"/>
                                 :
                                     ''
                             }
-                        
                         </div>                    
                     </div>
                     <div className="ItemBody">
@@ -93,7 +92,7 @@ class CardTemplate extends React.Component{
 
         const CardList = data=> {
             return data.map((item,index) =>{
-                return <Card item={item} idx={index} key={index} />
+                return <Card item={item} key={index} />
             })
         }
         
@@ -107,13 +106,10 @@ class CardTemplate extends React.Component{
             return(
                 <div>
                     no have Item
-                </div>
-        
+                </div>        
             )
-        }
-        
-    }
-    
+        }        
+    }    
 }
 
 export default CardTemplate;

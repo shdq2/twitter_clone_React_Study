@@ -14,7 +14,8 @@ const getCardList = async ()=>{
 }
 const insertCardList = async (img,msg,user_id)=>{
     var result = {};
-    await axios.post(config.host+':'+config.port+'card/cardInsert',{img:img,msg:msg,user_id:user_id}).then(res=>{
+
+    await axios.post(config.host+':'+config.port+'/card/cardInsert',{img:img,msg:msg,user_id:user_id}).then(res=>{
         const data = res.data;
         if(data.err){
             console.log(data.err);
@@ -22,6 +23,7 @@ const insertCardList = async (img,msg,user_id)=>{
         }
         result["code"] = true;
     }).catch(err =>{
+        console.log(err);
         result["code"] = false;
         result["errcode"] = err;
     });
@@ -30,7 +32,7 @@ const insertCardList = async (img,msg,user_id)=>{
 
 const removeCard = async (id)=> {
     var result = {};
-    await axios.post(config.host+':'+config.port+'card/cardDelete',{id:id}).then(res=>{
+    await axios.post(config.host+':'+config.port+'/card/cardDelete',{id:id}).then(res=>{
         if(res.data.err){
             console.log(res.data.err);
             return;
